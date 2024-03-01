@@ -2,11 +2,14 @@
 
 use Helpers\ValidationHelper;
 use Models\ComputerPart;
+use Models\Post;
 use Response\HTTPRenderer;
 use Response\Render\HTMLRenderer;
 use Database\DataAccess\Implementations\ComputerPartDAOImpl;
+use Database\DataAccess\Implementations\PostDAOImpl;
 use Response\Render\JSONRenderer;
 use Types\ValueType;
+use Helpers\DatabaseHelper;
 
 return [
     'random/part'=>function(): HTTPRenderer{
@@ -18,7 +21,6 @@ return [
         return new HTMLRenderer('component/computer-part-card', ['part'=>$part]);
     },
     'parts'=>function(): HTTPRenderer{
-        // IDの検証
         $id = ValidationHelper::integer($_GET['id']??null);
 
         $partDao = new ComputerPartDAOImpl();
@@ -43,7 +45,7 @@ return [
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 throw new Exception('Invalid request method!');
             }
-
+            
             $required_fields = [
                 'name' => ValueType::STRING,
                 'type' => ValueType::STRING,
@@ -84,11 +86,84 @@ return [
 
             return new JSONRenderer(['status' => 'success', 'message' => 'Part updated successfully']);
         } catch (\InvalidArgumentException $e) {
-            error_log($e->getMessage()); // エラーログはPHPのログやstdoutから見ることができます。
+            error_log($e->getMessage());
             return new JSONRenderer(['status' => 'error', 'message' => 'Invalid data.']);
         } catch (Exception $e) {
             error_log($e->getMessage());
             return new JSONRenderer(['status' => 'error', 'message' => 'An error occurred.']);
         }
+    },
+    'posts'=>function(): HTTPRenderer{
+
+        $postDao = new PostDAOImpl();
+        $posts = $postDao->getAllThreads();
+
+        $postWithReplies = array();
+        if($posts === null) throw new Exception('posts was not found!');
+        foreach($posts as $post){
+            $postWithReplies[] = $postDao->getReplies($post);
+        }
+
+        return new HTMLRenderer('component/posts', ['posts'=>$postWithReplies]);
+    },
+    'post'=>function(): HTTPRenderer{
+        $id = ValidationHelper::integer($_GET['id']??null);
+
+        $postDao = new PostDAOImpl();
+        $post = $postDao->getById($id);
+
+        if($post === null) throw new Exception('post was not found!');
+        $postWithReplies[] = $postDao->getReplies($post);
+
+        return new HTMLRenderer('component/post', ['post'=>$postWithReplies]);
+    },
+    'create/post' => function(): HTMLRenderer {
+        return new HTMLRenderer('component/create-post',[]);
+    },
+    'form/create/post' => function() {
+        try {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // $reply_to_id = htmlspecialchars($data['reply_to_id'], ENT_QUOTES, "UTF-8");
+                // $imagePath = htmlspecialchars($imagePath, ENT_QUOTES, "UTF-8");
+                // $subject = htmlspecialchars($data['subject'], ENT_QUOTES, "UTF-8");
+                // $content = htmlspecialchars($data['content'], ENT_QUOTES, "UTF-8");
+
+                // $postDao = new PostDAOImpl();
+
+                // $post = new Post(...$validatedData);
+
+                // error_log(json_encode($post->toArray(), JSON_PRETTY_PRINT));
+                
+                // $success = $postDao->create($post);
+
+                $imageName = uniqid('',true) .'-'. $_FILES["img"]["name"];
+                $imageOriginal = $_FILES["img"]["name"];
+                $extension = substr($imageOriginal, strrpos($imageOriginal, '.') + 1);
+                $fileSize = filesize($_FILES["img"]["tmp_name"]);
+
+                if ($fileSize > 20971520){
+                  throw new Exception('Over 20Mbyte');
+                }
+                if(!in_array(strtolower($extension), ['jpeg', 'jpg', 'png', 'gif'])) {
+                  throw new Exception('Not Supporte this extention');
+                }
+                // $token = uniqid('',true);
+                move_uploaded_file($_FILES["img"]["tmp_name"],"Images/" . $imageName);
+                DatabaseHelper::setImage($_POST, $imageName);
+                // header("Location: created?token=".$token);
+                return new JSONRenderer(['status' => 'success', 'message' => 'Post createed successfully']);
+              }
+        } catch (\InvalidArgumentException $e) {
+            error_log($e->getMessage());
+            return new JSONRenderer(['status' => 'error', 'message' => 'Invalid data.', 'data'=>$_POST]);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return new JSONRenderer(['status' => 'error', 'message' => 'An error occurred.', 'data'=>$_FILES]);
+        }
+
+    },
+    'form/create/reply' => function() {
+
     },
 ];
