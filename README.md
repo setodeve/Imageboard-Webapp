@@ -5,7 +5,7 @@ erDiagram
     posts ||--o{ posts : "Has Replys"
 
     posts {
-        post_id bigint PK
+        id bigint PK
         reply_to_id(Nullable) bigint 
         img(Nullable) text
         subject string

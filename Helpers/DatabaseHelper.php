@@ -34,4 +34,18 @@ class DatabaseHelper
 
         return $part;
     }
+
+    public static function setImage(array $data,string $imagePath){
+        $db = new MySQLWrapper();
+        
+        $reply_to_id = htmlspecialchars($data['reply_to_id'], ENT_QUOTES, "UTF-8");
+        $imagePath = htmlspecialchars($imagePath, ENT_QUOTES, "UTF-8");
+        $subject = htmlspecialchars($data['subject'], ENT_QUOTES, "UTF-8");
+        $content = htmlspecialchars($data['content'], ENT_QUOTES, "UTF-8");
+
+        $stmt = $db->prepare('INSERT INTO posts (reply_to_id, img, subject, content) VALUES (?, ?, ?, ?)');
+        $stmt->bind_param('isss', $reply_to_id, $imagePath, $subject, $content);
+        $stmt->execute();
+    }
+
 }
