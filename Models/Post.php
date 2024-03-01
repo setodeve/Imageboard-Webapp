@@ -9,21 +9,11 @@ class Post implements Model {
     use GenericModel;
 
     public function __construct(
-        private string $name,
-        private string $type,
-        private string $brand,
         private ?int $id = null,
-        private ?string $modelNumber = null,
-        private ?string $releaseDate = null,
-        private ?string $description = null,
-        private ?int $performanceScore = null,
-        private ?float $marketPrice = null,
-        private ?float $rsm = null,
-        private ?float $powerConsumptionW = null,
-        private ?float $lengthM = null,
-        private ?float $widthM = null,
-        private ?float $heightM = null,
-        private ?int $lifespan = null,
+        private ?int $reply_to_id = null,
+        private ?string $subject = null,
+        private ?string $img = null,
+        private ?string $content = null,
         private ?DataTimeStamp $timeStamp = null,
     ) {}
 
@@ -34,122 +24,36 @@ class Post implements Model {
     public function setId(int $id): void {
         $this->id = $id;
     }
-    public function getName(): string {
-        return $this->name;
+    public function getReplyId(): ?int {
+        return $this->reply_to_id;
     }
 
-    public function setName(string $name): void {
-        $this->name = $name;
+    public function setReplyId(int $id): void {
+        $this->reply_to_id = $id;
     }
-    public function getType(): string {
-        return $this->type;
-    }
-
-    public function setType(string $type): void {
-        $this->type = $type;
+    public function getSubject(): string {
+        return $this->subject;
     }
 
-    public function getBrand(): string {
-        return $this->brand;
+    public function setSubject(string $subject): void {
+        $this->subject = $subject;
     }
-
-    public function setBrand(string $brand): void {
-        $this->brand = $brand;
+    public function getImg(): string {
+        return $this->img;
     }
-
-    public function getModelNumber(): ?string {
-        return $this->modelNumber;
+    public function setImg(string $img): void {
+        $this->img = $img;
     }
-
-    public function setModelNumber(string $modelNumber): void {
-        $this->modelNumber = $modelNumber;
+    public function getContent(): string {
+        return $this->content;
     }
-
-    public function getReleaseDate(): ?string {
-        return $this->releaseDate;
+    public function setContent(string $content): void {
+        $this->content = $content;
     }
-
-    public function setReleaseDate(string $releaseDate): void {
-        $this->releaseDate = $releaseDate;
-    }
-
-    public function getDescription(): ?string {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): void {
-        $this->description = $description;
-    }
-
-    public function getPerformanceScore(): ?int {
-        return $this->performanceScore;
-    }
-
-    public function setPerformanceScore(int $performanceScore): void {
-        $this->performanceScore = $performanceScore;
-    }
-
-    public function getMarketPrice(): ?float {
-        return $this->marketPrice;
-    }
-
-    public function setMarketPrice(float $marketPrice): void {
-        $this->marketPrice = $marketPrice;
-    }
-
-    public function getRsm(): ?float {
-        return $this->rsm;
-    }
-
-    public function setRsm(float $rsm): void {
-        $this->rsm = $rsm;
-    }
-
-    public function getPowerConsumptionW(): ?float {
-        return $this->powerConsumptionW;
-    }
-
-    public function setPowerConsumptionW(float $powerConsumptionW): void {
-        $this->powerConsumptionW = $powerConsumptionW;
-    }
-
-    public function getLengthM(): ?float {
-        return $this->lengthM;
-    }
-
-    public function setLengthM(float $lengthM): void {
-        $this->lengthM = $lengthM;
-    }
-
-    public function getWidthM(): ?float {
-        return $this->widthM;
-    }
-
-    public function setWidthM(float $widthM): void {
-        $this->widthM = $widthM;
-    }
-
-    public function getHeightM(): ?float {
-        return $this->heightM;
-    }
-
-    public function setHeightM(float $heightM): void {
-        $this->heightM = $heightM;
-    }
-
-    public function getLifespan(): ?int {
-        return $this->lifespan;
-    }
-
-    public function setLifespan(int $lifespan): void {
-        $this->lifespan = $lifespan;
-    }
-
     public function getTimeStamp(): ?DataTimeStamp
     {
         return $this->timeStamp;
     }
-
     public function setTimeStamp(DataTimeStamp $timeStamp): void
     {
         $this->timeStamp = $timeStamp;

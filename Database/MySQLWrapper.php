@@ -39,6 +39,15 @@ class MySQLWrapper extends mysqli{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function prepareAndFetchAllWithout(string $prepareQuery): ?array{
+        $stmt = $this->prepare($prepareQuery);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if ($result === false) throw new Exception(sprintf('Error fetching data on query %s', $prepareQuery));
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function prepareAndExecute(string $prepareQuery, string $types, array $data): bool{
         $this->typesAndDataValidationPass($types, $data);
 

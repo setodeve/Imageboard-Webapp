@@ -12,17 +12,13 @@ interface PostDAO {
     public function createOrUpdate(Post $postData): bool;
 
     /**
-     * @param int $offset
-     * @param int $limit
      * @return Post[] メインスレッドであるすべての投稿、つまり他の投稿への返信でない投稿、つまりreplyToIDがnullである投稿
      */
-    public function getAllThreads(int $offset, int $limit): array;
+    public function getAllThreads(): array;
     
     /**
      * @param Post $postData - すべての返信が属する投稿
-     * @param int $offset
-     * @param int $limit
      * @return Post[] 本スレッドへの返信であるすべての投稿、つまりreplyToID = $postData->getId()となります。
      */
-    public function getReplies(Post $postData, int $offset, int $limit): array;
+    public function getReplies(Post $postData): array;
 }
