@@ -5,6 +5,7 @@ enum ValueType: string
 {
     case STRING = 'string';
     case INT = 'int';
+    case NULL = 'null';
     case FLOAT = 'float';
     case DATE = 'date'; // YYYY-MM-DD string
 }
