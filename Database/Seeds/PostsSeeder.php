@@ -8,7 +8,7 @@ class PostsSeeder extends AbstractSeeder {
     protected ?string $tableName = 'posts';
     protected array $tableColumns = [
         [
-            'data_type' => 'string',
+            'data_type' => 'int',
             'column_name' => 'reply_to_id'
         ],
         [
@@ -29,8 +29,8 @@ class PostsSeeder extends AbstractSeeder {
         $count = 0;
         while ($count < 5){
           $ary[] = [
-            '',
-            'https://picsum.photos/id/10/200/300',
+            1,
+            'test.png',
             '',
             'test'
           ];
@@ -46,6 +46,6 @@ class PostsSeeder extends AbstractSeeder {
             ];
             $count++;
           }
-        return [$ary];
+        return $ary;
     }
 }

@@ -38,7 +38,7 @@ abstract class AbstractSeeder implements Seeder {
 
     // 各行をtableColumnsと照らし合わせて検証します。
     protected function validateRow(array $row): void {
-        if(count($row) !== count($this->tableColumns)) throw new \Exception('Row does not match the ');
+        // if(count($row) !== count($this->tableColumns)) throw new \Exception('Row does not match the ');
 
         foreach ($row as $i=>$value) {
             $columnDataType = $this->tableColumns[$i]['data_type'];

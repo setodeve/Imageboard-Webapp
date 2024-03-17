@@ -6,7 +6,7 @@ use Database\DataAccess\Interfaces\PostDAO;
 use Database\DatabaseManager;
 use Models\Post;
 use Models\DataTimeStamp;
-
+use Helpers\ConvertHelper;
 class PostDAOImpl implements PostDAO
 {
     public function create(Post $post): bool
@@ -102,11 +102,13 @@ class PostDAOImpl implements PostDAO
             $timeStamp = $postData->getTimeStamp()??new DataTimeStamp(date('Y-m-h'), date('Y-m-h'));
             $postData->setTimeStamp($timeStamp);
         }
-
         return true;
     }
 
     private function resultToPost(array $data): Post{
+        if ($data['img']!= null || $data['img']!= ""){
+            $data['img'] = ConvertHelper::decrypt($data['img']);
+        }
         return new Post(
             id: $data['id'],
             reply_to_id: $data['reply_to_id'],
