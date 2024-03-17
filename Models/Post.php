@@ -31,7 +31,7 @@ class Post implements Model {
     public function setReplyId(int $id): void {
         $this->reply_to_id = $id;
     }
-    public function getSubject(): string {
+    public function getSubject(): string|null {
         return $this->subject;
     }
 
