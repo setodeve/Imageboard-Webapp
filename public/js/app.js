@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
           .then(data => {
               if (data.status === 'success') {
                   if (!formData.has('id')) form.reset();
+                  location.href = '/';
               } else if (data.status === 'error') {
                   alert('created failed');
               }

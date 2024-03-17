@@ -40,8 +40,8 @@
                   </span>
                   <h5>
                     <?php 
-                      if($value[0]->getSubject()!=null){
-                        echo "{$value[0]->getSubject()}";
+                      if($v->getSubject()!=null){
+                        echo "{$v->getSubject()}";
                       }
                     ?>
                   </h5>
