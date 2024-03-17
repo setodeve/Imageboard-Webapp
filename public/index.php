@@ -11,33 +11,24 @@ if (preg_match('/\.(?:png|jpg|jpeg|gif|js|css|html|ico)$/', $_SERVER["REQUEST_UR
     return false;
 }
 
-// ルートを読み込みます
 $routes = include('Routing/routes.php');
 
-// リクエストURIからパスだけを解析して取得します
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path = ltrim($path, '/');
 
-// パスがルートに存在するかチェックします
 if (isset($routes[$path])) {
-    // レンダラーを作成するコールバックを呼び出します
     $renderer = $routes[$path]();
 
     try{
-        // ヘッダーを設定します
         foreach ($renderer->getFields() as $name => $value) {
-            // ヘッダーに対して単純なバリデーションを実行します
             $sanitized_value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
             if ($sanitized_value && $sanitized_value === $value) {
                 header("{$name}: {$sanitized_value}");
             } else {
-                // ヘッダーの設定が失敗した場合のログを取るか、または処理します
-                // エラー処理に応じて、例外を投げるか、またはデフォルトで続行するかもしれません
                 http_response_code(500);
                 if($DEBUG) print("Failed setting header - original: '$value', sanitized: '$sanitized_value'");
                 exit;
             }
-
             print($renderer->getContent());
         }
     }
@@ -47,7 +38,6 @@ if (isset($routes[$path])) {
         if($DEBUG) print($e->getMessage());
     }
 } else {
-    // ルートが一致しない場合は、404エラーを表示します
-    http_response_code(404);
-    echo "404 Not Found: The requested route was not found on this server.";
+    header('Location:/404');
+    exit;
 }
