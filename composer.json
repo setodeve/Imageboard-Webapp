@@ -9,6 +9,7 @@
             "Images\\": "Images/",
             "public\\": "public/",
             "Response\\": "Response/",
+            "Models\\": "Models/",
             "Routing\\": "Routing/",
             "Views\\": "Views/"
         }
