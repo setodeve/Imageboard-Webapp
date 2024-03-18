@@ -8,7 +8,7 @@ use Response\Render\JSONRenderer;
 use Helpers\DatabaseHelper;
 
 return [
-    ''=>function(): HTTPRenderer{
+    'posts'=>function(): HTTPRenderer{
 
         $postDao = new PostDAOImpl();
         $posts = $postDao->getAllThreads();

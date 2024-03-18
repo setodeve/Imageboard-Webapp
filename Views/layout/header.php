@@ -15,6 +15,6 @@
   <header>
     <div>
       <a href="/create/post"><i class="fa-solid fa-plus"></i></a>
-      <a href="/"><i class="fa-solid fa-list"></i></a>
+      <a href="/posts"><i class="fa-solid fa-list"></i></a>
     </div>
   </header>
